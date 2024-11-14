@@ -30,8 +30,9 @@ def inserir_clientes(listaClientes):
 
 def ler_clientes():
     conn = sqlite3.connect('petshop.db')
-    conn.cursor().execute('SELECT * FROM clientes')
-    clientes = conn.cursor().fetchall()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM clientes')
+    clientes = cursor.fetchall()
     conn.close()
     return clientes
 

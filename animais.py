@@ -30,8 +30,9 @@ def inserir_animais(listaAnimais):
 
 def ler_animais():
     conn = sqlite3.connect('petshop.db')
-    conn.cursor().execute('SELECT * FROM animais')
-    animais = conn.cursor().fetchall()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM animais')
+    animais = cursor.fetchall()
     conn.close()
     return animais
 

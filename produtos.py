@@ -32,8 +32,9 @@ def inserir_produtos(listaProdutos):
 
 def ler_produtos():
     conn = sqlite3.connect('petshop.db')
-    conn.cursor().execute('SELECT * FROM produtos')
-    produtos = conn.cursor().fetchall()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM produtos')
+    produtos = cursor.fetchall()
     conn.close()
     return produtos
 

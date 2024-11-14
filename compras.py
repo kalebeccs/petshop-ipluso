@@ -33,8 +33,9 @@ def inserir_compras(listaCompras):
 
 def ler_compras():
     conn = sqlite3.connect('petshop.db')
-    conn.cursor().execute('SELECT * FROM compras')
-    compras = conn.cursor().fetchall()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM compras')
+    compras = cursor.fetchall()
     conn.close()
     return compras
 

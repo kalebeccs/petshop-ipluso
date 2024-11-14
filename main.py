@@ -59,3 +59,4 @@ print_listar_animais_para_adocao()
 
 # Consultar o total de compras realizadas por cada cliente
 print_consultar_total_compras_por_cliente()
+

@@ -1,3 +1,7 @@
+from animais import ler_animais
+from clientes import ler_clientes
+from compras import ler_compras
+from produtos import ler_produtos
 from querys import *
 
 #Cores e estilo para utilizar no terminal
@@ -31,3 +35,8 @@ def print_consultar_total_compras_por_cliente():
     print(yellow+bold,"Total de compras realizadas por cada cliente",reset_color)
     for cliente in consultar_total_compras_por_cliente():
         print(f"{white}Cliente:{reset_color} {cliente[0]} \n{white}Total de compras:{reset_color} R${cliente[1]:.2f}\n")
+
+print(ler_animais())
+print(ler_clientes())
+print(ler_compras())
+print(ler_produtos())
