@@ -9,18 +9,20 @@ conn.cursor().execute('''
  nome TEXT NOT NULL,
  especie TEXT NOT NULL,
  idade INTEGER NOT NULL,
- estado_adocao TEXT NOT NULL
+ estado_adocao TEXT NOT NULL,
+ adotado_por TEXT,
+ adotado_em DATE
  )
 ''')
 conn.commit()
 conn.close()
 
 # CRUD - Create | Read | Update | Delete
-def inserir_animal(nome, especie, idade, estado_adocao):
+def inserir_animal(nome, especie, idade, estado_adocao, adotado_por=None, adotado_em=None):
     conn = sqlite3.connect('petshop.db')
     conn.cursor().execute(
-        'INSERT INTO animais (nome, especie, idade, estado_adocao) VALUES (?, ?, ?, ?)', 
-        (nome, especie, idade, estado_adocao))
+        'INSERT INTO animais (nome, especie, idade, estado_adocao, adotado_por, adotado_em) VALUES (?, ?, ?, ?, ?, ?)', 
+        (nome, especie, idade, estado_adocao, adotado_por, adotado_em))
     conn.commit()
     conn.close()
 
@@ -65,5 +67,18 @@ def atualizar_animal(animal_id, nome=None, especie=None, idade=None, estado_adoc
 def excluir_animal_por_id(animal_id):
     conn = sqlite3.connect('petshop.db')
     conn.cursor().execute('DELETE FROM animais WHERE pk_animal = ?', (animal_id,))
+    conn.commit()
+    conn.close()
+
+def adotar_animal(nome_animal, adotado_por):
+    conn = sqlite3.connect('petshop.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT estado_adocao FROM animais WHERE nome = ?', (nome_animal,))
+    estado_adocao = cursor.fetchone()[0]
+    if estado_adocao != 'Disponível':
+        raise Exception('O animal não está disponível para adoção')
+    cursor.execute(
+        'UPDATE animais SET estado_adocao = "Adotado", adotado_por = ?, adotado_em = CURRENT_DATE WHERE nome = ?', 
+        (adotado_por, nome_animal))
     conn.commit()
     conn.close()
