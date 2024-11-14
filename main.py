@@ -26,7 +26,7 @@ clientes = [
 animais = [
     # (nome, especie, idade, estado_adocao)
     ('Bobby', 'Cachorro', 3, 'Disponível'),
-    ('Mimi', 'Gato', 2, 'Adotado'),
+    ('Mimi', 'Gato', 2, 'Adotado', 'Ana Martins', date(2024, 9, 1)),	
     ('Nina', 'Cachorro', 1, 'Disponível')
 ]
 compras = [
@@ -44,14 +44,27 @@ inserir_clientes(clientes)
 inserir_animais(animais)
 inserir_compras(compras)
 
-# Atualizando um produto
-atualizar_produto(1,'Ração Golden')
+inserir_produto('Aranhado','Acessório', 49.90, 10)
+
+# Atualizando dados de um produto 
+atualizar_produto_por_id(5, preco=179.90)
+atualizar_produto_por_id(6,nome='Arranhador para gatos')
+atualizar_produto_por_nome('Arranhador para gatos', preco= 45.90, quantidade_stock= 20)
+
+# Comprar um produto
+comprar_produto('Mariana Costa', 'Arranhador para gatos', date(2024, 10, 15), 5)
+
+# Excluindo um produto por id
+excluir_produto_por_id(2)
+
+# Adotar um animal
+adotar_animal('Nina', 'Carlos Souza')
 
 # Listar todos os produtos disponíveis e as respetivas quantidades em stock
 print_listar_produtos_disponiveis()
 
 # Consultar as compras de um cliente específico
-nome_cliente = "Carlos Souza"
+nome_cliente = "Mariana Costa"
 print_consultar_compras_cliente(nome_cliente)
 
 # Listar os animais disponíveis para adoção, incluindo a espécie e a idade
@@ -60,3 +73,8 @@ print_listar_animais_para_adocao()
 # Consultar o total de compras realizadas por cada cliente
 print_consultar_total_compras_por_cliente()
 
+# Listar os dados de todas as tabelas
+# print_ler_animais()
+# print_ler_clientes()
+# print_ler_compras()
+# print_ler_produtos()
