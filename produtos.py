@@ -28,7 +28,6 @@ def inserir_produto(nome, tipo, preco, quantidade_stock):
 def inserir_produtos(listaProdutos):
     for produto in listaProdutos:
         inserir_produto(*produto)
-    ler_produtos()
 
 def ler_produtos():
     conn = sqlite3.connect('petshop.db')
@@ -38,7 +37,7 @@ def ler_produtos():
     conn.close()
     return produtos
 
-def atualizar_produto(produto_id, nome=None, tipo=None, preco=None, quantidade_stock=None):
+def atualizar_produto_por_id(produto_id, nome=None, tipo=None, preco=None, quantidade_stock=None):
     campos = []
     valores = []
 
@@ -60,6 +59,29 @@ def atualizar_produto(produto_id, nome=None, tipo=None, preco=None, quantidade_s
     conn = sqlite3.connect('petshop.db')
     conn.cursor().execute(
         f'UPDATE produtos SET {', '.join(campos)} WHERE pk_produto = ?', 
+        valores)
+    conn.commit()
+    conn.close()
+
+def atualizar_produto_por_nome(nome, tipo=None, preco=None, quantidade_stock=None):
+    campos = []
+    valores = []
+
+    if tipo is not None:
+        campos.append("tipo = ?")
+        valores.append(tipo)
+    if preco is not None:
+        campos.append("preco = ?")
+        valores.append(preco)
+    if quantidade_stock is not None:
+        campos.append("quantidade_stock = ?")
+        valores.append(quantidade_stock)
+
+    valores.append(nome)
+
+    conn = sqlite3.connect('petshop.db')
+    conn.cursor().execute(
+        f'UPDATE produtos SET {', '.join(campos)} WHERE nome = ?', 
         valores)
     conn.commit()
     conn.close()
