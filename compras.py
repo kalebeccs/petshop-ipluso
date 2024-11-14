@@ -34,7 +34,11 @@ def inserir_compras(listaCompras):
 def ler_compras():
     conn = sqlite3.connect('petshop.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM compras')
+    cursor.execute('''
+                    SELECT clientes.nome, produtos.nome,data_compra, quantidade, total FROM compras
+                    JOIN clientes ON compras.fk_cliente = clientes.pk_cliente
+                    JOIN produtos ON compras.fk_produto = produtos.pk_produto
+                   ''')
     compras = cursor.fetchall()
     conn.close()
     return compras
@@ -72,4 +76,35 @@ def excluir_compra_por_id(compra_id):
     conn = sqlite3.connect('petshop.db')
     conn.cursor().execute('DELETE FROM compras WHERE pk_compra = ?', (compra_id,))
     conn.commit()
+    conn.close()
+
+# Função para comprar um produto
+def comprar_produto(nome_cliente, nome_produto, data_compra, quantidade):
+    conn = sqlite3.connect('petshop.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT pk_cliente FROM clientes WHERE nome = ?', (nome_cliente,))
+    cliente = cursor.fetchone()
+    if cliente is None:
+        print('Cliente não encontrado')
+        return
+    cliente_id = cliente[0]
+    cursor.execute('SELECT pk_produto FROM produtos WHERE nome = ?', (nome_produto,))
+    produto = cursor.fetchone()
+    if produto is None:
+        print('Produto não encontrado')
+        return
+    produto_id = produto[0]
+    cursor.execute('SELECT preco, quantidade_stock FROM produtos WHERE pk_produto = ?', (produto_id,))
+    produto = cursor.fetchone()
+    preco = produto[0]
+    quantidade_stock = produto[1]
+    total = preco * quantidade
+    if quantidade_stock >= quantidade:
+        conn.cursor().execute(
+            'INSERT INTO compras (fk_cliente, fk_produto, data_compra, quantidade, total) VALUES (?, ?, ?, ?, ?)', 
+            (cliente_id, produto_id, data_compra, quantidade, total))
+        conn.cursor().execute(
+            'UPDATE produtos SET quantidade_stock = ? WHERE pk_produto = ?', 
+            (quantidade_stock - quantidade, produto_id))
+        conn.commit()
     conn.close()
