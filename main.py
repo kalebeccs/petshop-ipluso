@@ -17,7 +17,7 @@ produtos = [
 ]
 clientes = [
     # (nome, telefone, email, endereco)
-    ('Carlos Souza', '1234567890', 'carlos@gmail.com', 'Rua A, 123'),
+    ('Antony Nascimento', '1234567890', 'antony@gmail.com', 'Rua A, 123'),
     ('Ana Martins', '0987654321', 'ana@gmail.com', 'Rua B, 456'),
     ('João Silva', '1122334455', 'joao@gmail.com', 'Rua C, 789'),
     ('Mariana Costa', '5566778899', 'mariana@gmail.com', 'Rua D, 321'),
